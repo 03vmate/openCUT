@@ -15,6 +15,7 @@ namespace OpenCUT
         static extern bool GetCursorPos(ref Point lpPoint);
         int[] screenCoordExtremes = new int[4];
 
+        /// S
         /// <param name="screens">Array of Screen objects that are present on the current system. Use Screen.AllScreens</param>
         public MousePosition(Screen[] screens)
         {
