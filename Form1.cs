@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -18,11 +19,13 @@ namespace OpenCUT
 
         Graphics graphics;
 
-        UInt32[,,] data = new UInt32[255, 255, 3]; //0:Left, 1:Right, 2:Middle
+        UInt32[,,] data;
         public Form1()
         {
             InitializeComponent();
             Application.ApplicationExit += new EventHandler(this.OnApplicationExit);
+
+            data = new UInt32[mousePosition.ScaledBounds()[0], mousePosition.ScaledBounds()[1], 3]; //0:Left, 1:Right, 2:Middle
             mouseHook.LeftButtonDown += new MouseHook.MouseHookCallback(mouseEvent => { mouseClickEvent(0, mouseEvent); });
             mouseHook.RightButtonDown += new MouseHook.MouseHookCallback(mouseEvent => { mouseClickEvent(1, mouseEvent); });
             mouseHook.MiddleButtonDown += new MouseHook.MouseHookCallback(mouseEvent => { mouseClickEvent(2, mouseEvent); });
@@ -36,7 +39,7 @@ namespace OpenCUT
             graphics.Clear(Color.White);
             Pen basec = new Pen(Color.Black, 1);
             float mult = 255F / maxDataValue(dim);
-            graphics.DrawRectangle(basec, 0, 0, 255*mul+2, 255*mul+2);
+            graphics.DrawRectangle(basec, 0, 0, data.GetLength(0) * mul+2, data.GetLength(1) * mul+2);
             for (int x = 0; x < data.GetLength(0); x++)
             {
                 for (int y = 0; y < data.GetLength(1); y++)
@@ -84,7 +87,7 @@ namespace OpenCUT
 
         private void button1_Click(object sender, EventArgs e)
         {
-            drawData();
+            drawData(0);
         }
     }
 }

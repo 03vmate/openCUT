@@ -114,7 +114,7 @@ namespace OpenCUT
                 if (MouseMessages.WM_MBUTTONUP == (MouseMessages)wParam)
                     if (MiddleButtonUp != null)
                         MiddleButtonUp((MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT)));
-                Debug.WriteLine((MouseMessages)wParam);
+                //Debug.WriteLine((MouseMessages)wParam);
             }
             return CallNextHookEx(hookID, nCode, wParam, lParam);
         }

@@ -13,7 +13,7 @@ namespace OpenCUT
     {
         [DllImport("user32.dll")]
         static extern bool GetCursorPos(ref Point lpPoint);
-        int[] screenCoordExtremes = new int[4];
+        public int[] screenCoordExtremes = new int[4];
 
         /// S
         /// <param name="screens">Array of Screen objects that are present on the current system. Use Screen.AllScreens</param>
@@ -34,7 +34,19 @@ namespace OpenCUT
         {
             Point pt = new Point();
             GetCursorPos(ref pt);
+            PointScaler(ref pt);
+            return new byte[] { (byte)pt.X, (byte)pt.Y };
+        }
 
+        public byte[] ScaledBounds()
+        {
+            Point pt = new Point(screenCoordExtremes[2], screenCoordExtremes[3]);
+            PointScaler(ref pt);
+            return new byte[] { (byte)pt.X, (byte)pt.Y };
+        }
+        
+        public void PointScaler(ref Point pt)
+        {
             //Scale coords so that they fit in a byte
             //Offset coordinates so that they start at 0
             pt.X -= screenCoordExtremes[0];
@@ -51,8 +63,6 @@ namespace OpenCUT
             if (pt.Y > 255) pt.Y = 255;
             if (pt.X < 0) pt.X = 0;
             if (pt.Y < 0) pt.Y = 0;
-
-            return new byte[] { (byte)pt.X, (byte)pt.Y };
         }
     }
 }
